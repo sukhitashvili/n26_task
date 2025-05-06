@@ -129,14 +129,14 @@ if __name__ == '__main__':
     device = 'auto'
     inference_object = ModelInference(path=model_path, device=device)
     messages = [
-        {"role": "system", "content": [
-            {"type": "text", "text": "You are a helpful assistant."}
-        ]},
+        # {"role": "user", "content": [
+        #     {"type": "text", "text": "You are a helpful assistant."}
+        # ]},
         {"role": "user", "content": [
             {"type": "image"},
             {"type": "text", "text": "What this image is about?"}
         ]}
     ]
-    pil_img = PIL.Image.open('page-0.png')
+    pil_img = PIL.Image.open('page-0.png').convert('RGB')
     output = inference_object(messages=messages, images=[pil_img])
     print(output)
