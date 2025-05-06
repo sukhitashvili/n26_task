@@ -11,7 +11,6 @@ class ModelInference:
                  path: str,
                  device: str,
                  return_full_text: bool = False,
-                 max_new_tokens: int = 50,
                  do_sample: bool = False,
                  top_p: float = 1,
                  temperature: Optional[float] = None,
@@ -19,7 +18,6 @@ class ModelInference:
         self.path = path
         self.device = device
         self.return_full_text = return_full_text
-        self.max_new_tokens = max_new_tokens
         self.do_sample = do_sample
         self.use_grammar = False
         self.top_p = top_p
@@ -31,7 +29,8 @@ class ModelInference:
     @torch.no_grad()
     def predict(self,
                 messages: list[dict],
-                images: list[PIL.Image.Image] | None = None) -> list[str]:
+                images: list[PIL.Image.Image] | None = None,
+                max_new_tokens: int = 100) -> list[str]:
         """
 
         Args:
@@ -43,6 +42,7 @@ class ModelInference:
                                         ]}
                                     ]
             images: PIL images.
+            max_new_tokens: Number of generated new tokens.
 
         Returns:
 
@@ -70,7 +70,7 @@ class ModelInference:
                                      token_type_ids=input_ids["token_type_ids"],
                                      pixel_values=input_ids["pixel_values"],
                                      do_sample=self.do_sample,
-                                     max_new_tokens=self.max_new_tokens,
+                                     max_new_tokens=max_new_tokens,
                                      num_return_sequences=1,
                                      pad_token_id=self.processor.tokenizer.pad_token_id,
                                      eos_token_id=self.processor.tokenizer.eos_token_id,
