@@ -1,8 +1,8 @@
 import gc
 from typing import Optional
 
+import PIL
 import torch
-from PIL import Image
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoProcessor
 
 
@@ -31,7 +31,7 @@ class ModelInference:
     @torch.no_grad()
     def predict(self,
                 messages: list[dict],
-                images: list[Image] | None = None) -> list[str]:
+                images: list[PIL.Image.Image] | None = None) -> list[str]:
         """
 
         Args:
@@ -130,13 +130,13 @@ if __name__ == '__main__':
     inference_object = ModelInference(path=model_path, device=device)
     messages = [
         {"role": "system", "content": [
-            {"type": "text", "text": "Answer questions only about time!"}
+            {"type": "text", "text": "You are a helpful assistant."}
         ]},
         {"role": "user", "content": [
-            # {"type": "image"},
-            {"type": "text", "text": "how are you?"}
+            {"type": "image"},
+            {"type": "text", "text": "What this image is about?"}
         ]}
     ]
-    # input_chat = [input_chat, input_chat]   # this must work too
-    output = inference_object(messages=messages, images=None)
+    pil_img = PIL.Image.open('page-0.png')
+    output = inference_object(messages=messages, images=[pil_img])
     print(output)
