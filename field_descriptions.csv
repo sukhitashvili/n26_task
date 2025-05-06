@@ -1,0 +1,34 @@
+Field Name,Description
+document_id,Unique identifier for the document
+document_type,"Type of document [credit, garnishment, investment, personal account]"
+document_date,Date the document was issued
+customer_name,Name of the account holder/customer
+customer_id,Customer identification number
+institution_name,Name of the financial institution
+institution_address,Address of the financial institution
+language,Language of the document
+portfolio_id,Unique identifier for the investment portfolio
+portfolio_value,Current total value of all investments in the portfolio
+asset_number,Number of different asset types of the portfolio
+risk_profile,Assessment of the portfolio's risk level
+account_number,Partially masked bank account number
+account_type,"Type of account (checking, savings, etc.)"
+statement_period,Time period covered by the account statement
+opening_balance,Account balance at the beginning of the statement period
+closing_balance,Account balance at the end of the statement period
+available_balance,Funds available for immediate withdrawal or use
+transaction_number,Number of financial activities affecting the account during the statement period
+debtor_name,Name of the individual whose assets are being garnished
+creditor_name,Name of the entity (person/organization) to whom the debt is owed
+garnishment_amount,Amount of money to be garnished
+effective_date,Date when the garnishment takes effect
+duration,Time period for which the garnishment remains active
+legal_authority,Legal basis or jurisdiction authorizing the garnishment
+card_number,Partially masked credit card number
+credit_limit,Maximum amount of credit extended to the customer
+interest_rate,Annual percentage rate applied to outstanding balances
+payment_due_date,Date by which payment must be received
+statement_period,Time period covered by the credit statement
+minimum_payment,Smallest amount that must be paid to maintain account in good standing
+previous_balance,Account balance at the beginning of the statement period
+new_balance,Account balance at the end of the statement period
