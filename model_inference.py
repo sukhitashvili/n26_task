@@ -127,6 +127,7 @@ def get_model_and_tokenizer(base_model_folder_path: str, lora_ckpt_path: str = '
 
 
 if __name__ == '__main__':
+    import numpy as np
     model_path = 'gemma-3-4b-it-vllm'
     device = 'auto'
     inference_object = ModelInference(path=model_path, device=device)
@@ -140,5 +141,9 @@ if __name__ == '__main__':
         ]}
     ]
     pil_img = PIL.Image.open('page-0.png').convert('RGB')
-    output = inference_object(messages=messages, images=[pil_img])
+    # fake to be a two-page document
+    np_image1 = np.array(pil_img)
+    np_image2 = np.array(pil_img)
+    concatenated = np.concatenate((np_image1, np_image2), axis=0)
+    output = inference_object(messages=messages, images=[concatenated], max_new_tokens=4000)
     print(output)
