@@ -136,7 +136,7 @@ if __name__ == '__main__':
         # ]},
         {"role": "user", "content": [
             {"type": "image"},
-            {"type": "text", "text": "What this image is about?"}
+            {"type": "text", "text": "Print all the text line by line from the image."}
         ]}
     ]
     pil_img = PIL.Image.open('page-0.png').convert('RGB')
