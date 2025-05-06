@@ -67,6 +67,8 @@ class ModelInference:
 
         output = self.model.generate(input_ids=input_ids["input_ids"],
                                      attention_mask=input_ids["attention_mask"],
+                                     token_type_ids=input_ids["token_type_ids"],
+                                     pixel_values=input_ids["pixel_values"],
                                      do_sample=self.do_sample,
                                      max_new_tokens=self.max_new_tokens,
                                      num_return_sequences=1,
