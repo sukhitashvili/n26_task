@@ -69,12 +69,19 @@ class DocumentExtractor:
         return page_img
 
     @staticmethod
-    def extract_json(text):
-        # match content between triple backticks and optionally a language identifier
-        match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
+    def read_json(text):
+        # Extract content between triple backticks (optionally with json tag)
+        match = re.search(r'```(?:json)?\s*(.*?)\s*```', text, re.DOTALL)
         if match:
-            text = match.group(1)
-        return from_json(text, allow_partial=True)
+            content = match.group(1)
+            # Split into lines and parse each line as a JSON object
+            lines = content.strip().splitlines()
+            result = {}
+            for line in lines:
+                obj = from_json(line, allow_partial=True)
+                result.update(obj)
+            return result
+        return {}
 
     def get_general_information(self):
         field_to_extract = self.extraction_fields['general']
