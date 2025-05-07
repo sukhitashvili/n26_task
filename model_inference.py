@@ -5,6 +5,11 @@ import PIL
 import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoProcessor
 
+# without this code getting flash attn memory error for this implementation of the Gemma3
+torch.backends.cuda.enable_mem_efficient_sdp(False)
+torch.backends.cuda.enable_flash_sdp(False)
+torch.backends.cuda.enable_math_sdp(True)
+
 
 class ModelInference:
     def __init__(self,
@@ -128,6 +133,7 @@ def get_model_and_tokenizer(base_model_folder_path: str, lora_ckpt_path: str = '
 
 if __name__ == '__main__':
     import numpy as np
+
     model_path = 'google/gemma-3-4b-it'
     device = 'auto'
     inference_object = ModelInference(path=model_path, device=device)
