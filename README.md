@@ -96,7 +96,7 @@ type of document
 - [field_descriptions.csv](./field_descriptions.csv) - Descriptions of each field
 - [requirements.txt](./requirements.txt) - Code dependencies
 
-## ▶️ Commands to Build, Run, and Test the App Locally
+## ▶️ Commands to Run
 
 Install the application locally:
 ```bash
