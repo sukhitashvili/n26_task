@@ -104,7 +104,9 @@ class DocumentExtractor:
                   "- Addresses should follow the format 'street_name street_number, city zipcode, country'\n"
                   "- Monetary amounts should follow the format 'amount currency_symbol' using a full stop as decimal"
                   " separator for the amount\n"
-                  "- Additional ﬁelds must follow the same format as originally found in the document.\n")
+                  "- Additional ﬁelds must follow the same format as originally found in the document.\n"
+                  "- If you cannot find information in a document to fill the requested fields, leave the fields equal "
+                  "to an empty string in the generated JSON\n")
         result += '```json\n'
         for field in field_names:
             json_string = json.dumps({field: f"ESTIMATED_{field.upper()}"})
