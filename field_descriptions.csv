@@ -6,7 +6,7 @@ customer_name,Name of the account holder/customer
 customer_id,Customer identification number
 institution_name,Name of the financial institution
 institution_address,Address of the financial institution
-language,Language of the document
+language,"Language of the document [English, German, French, Spanish, Italian]"
 portfolio_id,Unique identifier for the investment portfolio
 portfolio_value,Current total value of all investments in the portfolio
 asset_number,Number of different asset types of the portfolio
