@@ -1,6 +1,6 @@
 Field Name,Description
 document_id,Unique identifier for the document
-document_type,"Type of document [credit, garnishment, investment, personal account]"
+document_type,"Type of a document which can be only one from the list [credit, garnishment, investment, personal account]"
 document_date,Date the document was issued
 customer_name,Name of the account holder/customer
 customer_id,Customer identification number
