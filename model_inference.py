@@ -103,7 +103,7 @@ def get_model_and_tokenizer_quantized(folder_path: str, device: str = 'auto') ->
     processor = AutoProcessor.from_pretrained(folder_path, use_fast=True)
     processor.tokenizer.pad_token = processor.tokenizer.eos_token
     # load model
-    quantization_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16)
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True, bnb_8bit_compute_dtype=torch.bfloat16)
     model = AutoModelForCausalLM.from_pretrained(folder_path,
                                                  quantization_config=quantization_config,
                                                  device_map=device,
