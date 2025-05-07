@@ -48,43 +48,7 @@ class DocumentExtractor:
 
         print(general_info)
 
-    def get_text_language(self, document_text: str) -> str:
-        prompt = [{"role": "system", "content": [{"type": "text", "text": "You are a helpful assistant."}]},
-                  {"role": "user", "content": [
-                      {"type": "text", "text": 'I provide you a text from a bank document. Which language do you '
-                                               'think it is written in from these ones {English, German, French, '
-                                               'Spanish, Italian}? Provide answer in the following JSON format: '
-                                               '```json\n{"language": "SELECTED_LANGUAGE"}\n```.'
-                                               f'The document text:\n{document_text}'}
-                  ]}
-                  ]
-        model_answer = self.vision_llm(messages=prompt, max_new_tokens=200)[0]
-        model_answer = self.extract_json(model_answer)
-        language = model_answer['language']
-        return language
-
-    @staticmethod
-    def convert_to_img(document_page) -> PIL.Image.Image:
-        page_img = document_page.get_pixmap()
-        page_img = PIL.Image.frombytes("RGB", [page_img.width, page_img.height], page_img.samples)
-        return page_img
-
-    @staticmethod
-    def read_json(text):
-        # Extract content between triple backticks (optionally with json tag)
-        match = re.search(r'```(?:json)?\s*(.*?)\s*```', text, re.DOTALL)
-        if match:
-            content = match.group(1)
-            # Split into lines and parse each line as a JSON object
-            lines = content.strip().splitlines()
-            result = {}
-            for line in lines:
-                obj = from_json(line, allow_partial=True)
-                result.update(obj)
-            return result
-        return {}
-
-    def get_general_information(self, pil_img: PIL.Image.Image):
+    def get_general_information(self, pil_img: PIL.Image.Image) -> dict:
         fields_to_extract = self.extraction_fields['general']
         text_with_field_descriptions = self.get_field_descriptions(fields_of_interest=fields_to_extract)
         json_format = self.get_json_format(field_names=fields_to_extract)
@@ -94,10 +58,25 @@ class DocumentExtractor:
         prompt = self.get_image_prompt(text=prompt_text)
         information = \
             self.vision_llm(messages=prompt, images=[pil_img], max_new_tokens=2000)[0]
-        return information
+        output_data = self.read_json(text=information)
+        return output_data
 
-    def get_document_spefic_information(self):
+    def get_document_specific_information(self):
         pass
+
+    @staticmethod
+    def convert_to_img(document_page) -> PIL.Image.Image:
+        page_img = document_page.get_pixmap()
+        page_img = PIL.Image.frombytes("RGB", [page_img.width, page_img.height], page_img.samples)
+        return page_img
+
+    @staticmethod
+    def read_json(text) -> dict:
+        idx_1 = text.find('{')
+        idx_2 = text.find('}')
+        the_json_str = text[idx_1:idx_2 + 1]
+        the_json = from_json(the_json_str, allow_partial=True)
+        return the_json
 
     def get_field_descriptions(self, fields_of_interest: list[str]) -> str:
         df = self.field_descriptions_df
@@ -112,7 +91,13 @@ class DocumentExtractor:
         return result_string
 
     def get_json_format(self, field_names: list[str]) -> str:
-        result = "\nProvide answer in the following JSON format:\n"
+        result = ("\nProvide answer in the JSON format where:\n"
+                  "- Dates should follow the format 'dd.mm.yyyy'\n"
+                  "- Names should follow the format 'ﬁrst_name last_name'\n"
+                  "- Addresses should follow the format 'street_name street_number, city zipcode, country'\n"
+                  "- Monetary amounts should follow the format 'amount currency_symbol' using a full stop as decimal"
+                  " separator for the amount\n"
+                  "- Additional ﬁelds must follow the same format as originally found in the document.\n")
         result += '```json\n'
         for field in field_names:
             json_string = json.dumps({field: f"ESTIMATED_{field.upper()}"})
