@@ -128,7 +128,7 @@ def get_model_and_tokenizer(base_model_folder_path: str, lora_ckpt_path: str = '
 
 if __name__ == '__main__':
     import numpy as np
-    model_path = 'gemma-3-4b-it-vllm'
+    model_path = 'google/gemma-3-4b-it'
     device = 'auto'
     inference_object = ModelInference(path=model_path, device=device)
     messages = [
